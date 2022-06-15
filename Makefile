@@ -87,6 +87,11 @@ dev-publish-image: _calculate-build-number build-operator
 	docker push $(REGISTRY_REPO):$(CONTAINER_VERSION)
 	@echo "\n image: $(REGISTRY_REPO):$(CONTAINER_VERSION)"
 
+dev-publish-image-ttl: _calculate-build-number build-operator
+	docker tag $(REGISTRY_REPO) $(REGISTRY_REPO)
+	docker push $(REGISTRY_REPO)
+	@echo "\n image: $(REGISTRY_REPO)"	
+
 dev-run-operator-local: dev-apply-common-resources
 	# pick the first node to test run
 	$(eval export NODE_HOSTNAME=$(shell sh -c "kubectl get nodes -o jsonpath='{ $$.items[0].status.addresses[?(@.type==\"Hostname\")].address }'")) 
